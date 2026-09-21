@@ -115,6 +115,7 @@ async def get_company_compliance(company_number: str):
             service_address_formatted=d.address.formatted,
             active_companies_count=d.active_appointments,
             dissolved_companies_count=d.dissolved_appointments,
+            appointment_velocity_per_year=d.appointment_velocity_per_year,
             risk_score=d.risk_score,
             risk_band=d.risk_band,
             risk_flags=d.risk_flags,

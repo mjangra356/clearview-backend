@@ -51,6 +51,7 @@ class DirectorCardDTO(BaseModel):
     service_address_formatted: str
     active_companies_count: int
     dissolved_companies_count: int
+    appointment_velocity_per_year: float = 0.0
     risk_score: int
     risk_band: str
     risk_flags: List[dict] = Field(default_factory=list)
