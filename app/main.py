@@ -40,6 +40,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Sanitize repeated slashes in incoming request URLs (e.g. //companies -> /companies)
+@app.middleware("http")
+async def normalize_double_slashes(request, call_next):
+    raw_path = request.scope.get("path", "")
+    if "//" in raw_path:
+        import re
+        request.scope["path"] = re.sub(r"/+", "/", raw_path)
+    return await call_next(request)
+
 # Mount routes with both /api prefix and root / so any URL format works seamlessly
 app.include_router(router, prefix="/api")
 app.include_router(router, prefix="")
