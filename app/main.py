@@ -42,6 +42,14 @@ app.add_middleware(
 
 app.include_router(router)
 
+@app.get("/")
+@app.get("/health")
+async def root_health():
+    return {
+        "status": "healthy",
+        "service": "ClearView Fraud & Compliance Intelligence API",
+    }
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app.main:app", host="0.0.0.0", port=settings.PORT, reload=True)
