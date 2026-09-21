@@ -1,0 +1,39 @@
+﻿version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clearview-backend
+    restart: always
+    ports:
+      - 8000:8000
+    environment:
+      - COMPANIES_HOUSE_API_KEY=
+      - COMPANIES_HOUSE_BASE_URL=https://api.company-information.service.gov.uk
+      - LLM_PROVIDER=
+      - GEMINI_API_KEY=
+      - OPENAI_API_KEY=
+      - PORT=8000
+    healthcheck:
+      test: [CMD, curl, -f, http://localhost:8000/api/health]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_BASE_URL=
+    container_name: clearview-frontend
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
