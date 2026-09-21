@@ -40,7 +40,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router)
+# Mount routes with both /api prefix and root / so any URL format works seamlessly
+app.include_router(router, prefix="/api")
+app.include_router(router, prefix="")
 
 @app.get("/")
 @app.get("/health")
